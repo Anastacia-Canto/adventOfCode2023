@@ -55,23 +55,23 @@ public class Day3 {
         return initial;
     }
 
+    public void check() {
+        if (isDigitCharacter(checkingLine, checkingPos)) {
+            partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
+        }
+    }
+
     public void checkUp(int line, int pos) {
         checkingLine = line - 1;
         if (pos > 0) {
             checkingPos = pos - 1;
-            if (isDigitCharacter(checkingLine, checkingPos)) {
-                partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-            }
+            check();
         }
         checkingPos = pos;
-        if (isDigitCharacter(checkingLine, checkingPos)) {
-            partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-        }
+        check();
         if (pos < schema.get(line).length() - 1) {
             checkingPos = pos + 1;
-            if (isDigitCharacter(checkingLine, checkingPos)) {
-                partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-            }
+            check();
         }
     }
 
@@ -79,19 +79,13 @@ public class Day3 {
         checkingLine = line + 1;
         if (pos > 0) {
             checkingPos = pos - 1;
-            if (isDigitCharacter(checkingLine, checkingPos)) {
-                partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-            }
+            check();
         }
         checkingPos = pos;
-        if (isDigitCharacter(checkingLine, checkingPos)) {
-            partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-        }
+        check();
         if (pos < schema.get(line).length() - 1) {
             checkingPos = pos + 1;
-            if (isDigitCharacter(checkingLine, checkingPos)) {
-                partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-            }
+            check();
         }
     }
 
@@ -99,15 +93,11 @@ public class Day3 {
         checkingLine = line;
         if (pos > 0) {
             checkingPos = pos - 1;
-            if (isDigitCharacter(checkingLine, checkingPos)) {
-                partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-            }
+            check();
         }
         if (pos < schema.get(line).length() - 1) {
             checkingPos = pos + 1;
-            if (isDigitCharacter(checkingLine, checkingPos)) {
-                partNumberPositions.get(checkingLine).add(setInitialPosition(checkingLine, checkingPos));
-            }
+            check();
         }
     }
 
