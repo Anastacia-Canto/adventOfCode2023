@@ -51,7 +51,6 @@ public class Day5Part2 {
             System.out.println("Error reading file");
             e.printStackTrace();
         }
-
     }
     public void openFile() {
         try {
@@ -97,17 +96,11 @@ public class Day5Part2 {
 
     public long getLocation(long seed) {
         long soil = getDestination(seed, seedToSoil);
-//            System.out.println("soil: " + soil);
         long fertilizer = getDestination(soil, soilToFertilizer);
-//            System.out.println("fertilizer: " + fertilizer);
         long water = getDestination(fertilizer, fertilizerToWater);
-//            System.out.println("water: " + water);
         long light = getDestination(water, waterToLight);
-//            System.out.println("light: " + light);
         long temperature = getDestination(light, lightToTemperature);
-//            System.out.println("temperature: " + temperature);
         long humidity = getDestination(temperature, temperatureToHumidity);
-//            System.out.println("humidity: " + humidity);
         return getDestination(humidity, humidityToLocation);
     }
 

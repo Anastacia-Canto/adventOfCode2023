@@ -15,6 +15,7 @@ public class Day5Part2Reverse {
 
     private Long lowestLocation;
     private String initialSeeds;
+    private Long initialLocation;
     private ArrayList<String> seedToSoil = new ArrayList<>();
     private ArrayList<String> soilToFertilizer = new ArrayList<>();
     private ArrayList<String> fertilizerToWater = new ArrayList<>();
@@ -24,28 +25,28 @@ public class Day5Part2Reverse {
     private ArrayList<String> humidityToLocation = new ArrayList<>();
 
 
-    public Day5Part2Reverse(String path) {
+    public Day5Part2Reverse(Long initialLocation, String path) {
+        this.initialLocation = initialLocation;
         this.path = path;
     }
 
     public void checkSeed() {
-        long location = 0;
+        long location =  initialLocation;
+        List<String> stringNumbers = Arrays.asList((initialSeeds.substring(initialSeeds.indexOf(':') + 2, initialSeeds.length()).split(" ")));
 
         while (true) {
             long seed = getSeed(location);
-
-            List<String> stringNumbers = Arrays.asList((initialSeeds.substring(initialSeeds.indexOf(':') + 2, initialSeeds.length()).split(" ")));
             for (int i = 0; i < stringNumbers.size(); i++) {
                 long range = Long.parseLong(stringNumbers.get(i + 1));
-                for (int j = 0; j < range; j++) {
-                    if ((Long.parseLong(stringNumbers.get(i)) + j) == seed) {
-                        lowestLocation = location;
-                        return;
-                    }
+                long start = Long.parseLong(stringNumbers.get(i));
+                long end = start + range;
+                if (seed >= start && seed <= end) {
+                    lowestLocation = location;
+                    return;
                 }
                 i++;
-                location++;
             }
+            location++;
         }
 
     }
@@ -61,7 +62,6 @@ public class Day5Part2Reverse {
             System.out.println("Error reading file");
             e.printStackTrace();
         }
-
     }
     public void openFile() {
         try {
@@ -93,8 +93,6 @@ public class Day5Part2Reverse {
             System.out.println("Error reading file");
             e.printStackTrace();
         }
-
-
     }
 
     public long getSource(long destination, ArrayList<String> mapToSource) {
@@ -108,19 +106,12 @@ public class Day5Part2Reverse {
     }
 
     public long getSeed(long location) {
-//        System.out.println("location: " + location);
         long humidity = getSource(location, humidityToLocation);
-//        System.out.println("humidity: " + humidity);
         long temperature = getSource(humidity, temperatureToHumidity);
-//        System.out.println("temperature: " + temperature);
         long light = getSource(temperature, lightToTemperature);
-//        System.out.println("light: " + light);
         long water = getSource(light, waterToLight);
-//        System.out.println("water: " + water);
         long fertilizer = getSource(water, fertilizerToWater);
-//        System.out.println("fertilizer: " + fertilizer);
         long soil = getSource(fertilizer, soilToFertilizer);
-//        System.out.println("soil: " + soil);
         return getSource(soil, seedToSoil);
     }
 
@@ -131,7 +122,7 @@ public class Day5Part2Reverse {
     }
 
     public static void main(String[] args) {
-        Day5Part2Reverse d5 = new Day5Part2Reverse("/home/anastacia/IdeaProjects/AdventOfCode2023/src/day_5/input.txt");
+        Day5Part2Reverse d5 = new Day5Part2Reverse((long)1000000, "/home/anastacia/IdeaProjects/AdventOfCode2023/src/day_5/input.txt");
         System.out.println("lowest location: " + d5.getLowestLocation());
     }
 }

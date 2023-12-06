@@ -26,7 +26,13 @@ public class Day5Test {
 
     @Test
     public void lowestEquals46Reverse() {
-        Day5Part2Reverse d5 = new Day5Part2Reverse("/home/anastacia/IdeaProjects/AdventOfCode2023/src/day_5/simpleInput.txt");
+        Day5Part2Reverse d5 = new Day5Part2Reverse((long) 0, "/home/anastacia/IdeaProjects/AdventOfCode2023/src/day_5/simpleInput.txt");
         assertEquals(46, d5.getLowestLocation());
+    }
+
+    @Test
+    public void lowestEquals24261545() {
+        Day5Part2Reverse d5 = new Day5Part2Reverse((long)1000000, "/home/anastacia/IdeaProjects/AdventOfCode2023/src/day_5/input.txt");
+        assertEquals(24261545, d5.getLowestLocation());
     }
 }
