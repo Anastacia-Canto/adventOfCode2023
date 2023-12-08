@@ -12,7 +12,6 @@ public class Day8Part2 {
     private String path;
     private List<String> nodes = new ArrayList<>();
     private String instruction;
-//    private List<Integer> positions;
     private long steps;
     private List<Integer> startPoints = new ArrayList<>();
 
@@ -52,18 +51,13 @@ public class Day8Part2 {
         String destination = "";
         for (int i = 0; i < instruction.length(); i++) {
             steps++;
-//            System.out.println("steps: " + steps);
-//            System.out.println("position: " + position);
-//            System.out.println("instruction: " + instruction.charAt(i));
             List<String> actualNodes = startPoints.stream().map(position -> nodes.get(position)).collect(Collectors.toList());
-//            System.out.println("node: " + node);
             startPoints.clear();
             for (String node : actualNodes) {
                 String[] nodeParts = node.substring(node.indexOf("(") + 1, node.indexOf(")")).split(",");
                 System.out.println("node0: " + nodeParts[0] + " node1: " + nodeParts[1]);
                 destination = Character.compare(instruction.charAt(i), 'R') == 0
                         ? destination = nodeParts[1].trim() : nodeParts[0].trim();
-//            System.out.println("destination: " + destination);
                 startPoints.add(searchForPosition(destination));
             }
             if (checkDestinations()) return true;
@@ -76,7 +70,6 @@ public class Day8Part2 {
                 .filter(node -> node.substring(0, 3).endsWith("A"))
                 .map(node -> nodes.indexOf(node))
                 .collect(Collectors.toList());
-        System.out.println("starts: " + startPoints);
     }
 
     public long getSteps(){
