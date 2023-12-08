@@ -5,14 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Day8Part2 {
 
     private String path;
     private List<String> nodes = new ArrayList<>();
     private String instruction;
-    private int position;
+//    private List<Integer> positions;
     private long steps;
+    private List<Integer> startPoints = new ArrayList<>();
 
     public Day8Part2(String path) {
         this.path = path;
@@ -30,38 +32,57 @@ public class Day8Part2 {
     }
 
     public int searchForPosition(String target) {
-        for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).startsWith(target)) {
-                position = i;
-                break;
+        String nextNode = nodes.stream()
+                .filter(node -> node.startsWith(target))
+                .findFirst().get();
+        return nodes.indexOf(nextNode);
+    }
+
+    public boolean checkDestinations() {
+        int goal = startPoints.size();
+        int count = 0;
+        for (int position : startPoints) {
+            if (nodes.get(position).substring(0, 3).endsWith("Z")) {
+                count++;
             }
         }
-        return position;
+        return count == goal;
     }
-    public String readInstructions() {
+    public boolean readInstructions() {
         String destination = "";
         for (int i = 0; i < instruction.length(); i++) {
             steps++;
-            System.out.println("steps: " + steps);
-            System.out.println("position: " + position);
-            System.out.println("instruction: " + instruction.charAt(i));
-            String node = nodes.get(position);
-            System.out.println("node: " + node);
-            String[] nodeParts = node.substring(node.indexOf("(") + 1, node.indexOf(")")).split(",");
-            System.out.println("node0: " + nodeParts[0] + " node1: " + nodeParts[1]);
-            destination = Character.compare(instruction.charAt(i), 'R') == 0
-                    ? destination = nodeParts[1].trim() : nodeParts[0].trim();
-            System.out.println("destination: " + destination);
-            if (destination.startsWith("Z")) return destination;
-            else position = searchForPosition(destination);
+//            System.out.println("steps: " + steps);
+//            System.out.println("position: " + position);
+//            System.out.println("instruction: " + instruction.charAt(i));
+            List<String> actualNodes = startPoints.stream().map(position -> nodes.get(position)).collect(Collectors.toList());
+//            System.out.println("node: " + node);
+            startPoints.clear();
+            for (String node : actualNodes) {
+                String[] nodeParts = node.substring(node.indexOf("(") + 1, node.indexOf(")")).split(",");
+                System.out.println("node0: " + nodeParts[0] + " node1: " + nodeParts[1]);
+                destination = Character.compare(instruction.charAt(i), 'R') == 0
+                        ? destination = nodeParts[1].trim() : nodeParts[0].trim();
+//            System.out.println("destination: " + destination);
+                startPoints.add(searchForPosition(destination));
+            }
+            if (checkDestinations()) return true;
         }
-        return destination;
+        return false;
+    }
+
+    public void findStartPoints(){
+        startPoints = nodes.stream()
+                .filter(node -> node.substring(0, 3).endsWith("A"))
+                .map(node -> nodes.indexOf(node))
+                .collect(Collectors.toList());
+        System.out.println("starts: " + startPoints);
     }
 
     public long getSteps(){
         openFile();
-        position = searchForPosition("AAA");
-        while (!readInstructions().startsWith("ZZZ")) {}
+        findStartPoints();
+        while (!readInstructions()) {}
         return steps;
     }
 

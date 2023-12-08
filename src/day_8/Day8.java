@@ -30,13 +30,10 @@ public class Day8 {
     }
 
     public int searchForPosition(String target) {
-        for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).startsWith(target)) {
-                position = i;
-                break;
-            }
-        }
-        return position;
+        String nextNode = nodes.stream()
+                .filter(node -> node.startsWith(target))
+                .findFirst().get();
+        return nodes.indexOf(nextNode);
     }
     public String readInstructions() {
         String destination = "";
@@ -60,7 +57,7 @@ public class Day8 {
     }
 
     public static void main(String[] args) {
-        Day8 d8 = new Day8("/home/anastacia/IdeaProjects/AdventOfCode2023/src/day_8/input.txt");
+        Day8 d8 = new Day8("/home/anastacia/IdeaProjects/AdventOfCode2023/src/day_8/simpleInput.txt");
         System.out.println(d8.getSteps());
     }
 }
