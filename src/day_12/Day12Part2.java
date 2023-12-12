@@ -11,7 +11,7 @@ public class Day12Part2 {
     private String path;
     private List<String> springs = new ArrayList<>();
     private List<List<Integer>> groups = new ArrayList<>();
-    private long possibilities;
+    private List<String> possibilities = new ArrayList<>();
 
     public Day12Part2(String path) {
         this.path = path;
@@ -49,17 +49,18 @@ public class Day12Part2 {
             checkCharacter(spring.replaceFirst("\\?", "#"), groupList);
         }
 
+        List<Integer> set = new ArrayList<>();
         for (int i = 0; i < spring.length(); i++) {
             if (Character.compare('#', spring.charAt(i)) == 0) {
                 int j = 0;
                 while ((j + i < spring.length()) && Character.compare('#', spring.charAt(j + i)) == 0) {
                     j++;
                 }
-                if (!groupList.isEmpty() && j == groupList.get(0)) groupList.remove(0);
+                set.add(j);
                 i += j - 1;
             }
         }
-        if (!spring.contains("?") && groupList.isEmpty()) possibilities++;
+        if (!spring.contains("?") && set.equals(groupList)) possibilities.add(spring);
         System.out.println("spring: " + spring);
     }
 
@@ -68,9 +69,8 @@ public class Day12Part2 {
 //            System.out.println("Spring " + (i + 1) + "------------------------");
             checkCharacter(springs.get(i), groups.get(i));
         }
-        System.out.println(possibilities);
+        System.out.println(possibilities.size());
     }
-
 
 
     public static void main(String[] args) {
