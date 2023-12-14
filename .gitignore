@@ -29,3 +29,6 @@ bin/
 .DS_Store
 
 src/*/input.txt
+src/*/input2.txt
+src/*/input3.txt
+src/*/input4.txt
